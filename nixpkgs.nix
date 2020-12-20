@@ -1,8 +1,8 @@
 let
   nixpkgs = builtins.fetchTarball {
-    name = "nixos-unstable-2020-10-25";
+    name = "nixpkgs-unstable-2020-12-20";
     url =
-      "https://github.com/nixos/nixpkgs/archive/2deeb58f49480f468adca6b08291322de4dbce6b.tar.gz";
-    sha256 = "0fx2car6dcd1yz6jjkifcan0amwzhs3170h0r69k0wfwiaadpvjv";
+      "https://github.com/nixos/nixpkgs/archive/134a1ad3751f22eba9a1a6ae41fde34d98d168b8.tar.gz";
+    sha256 = "1inja49kq421yb32hwhm36cckiikms86lsjsp4sx0cxyksqx2wdn";
   };
 in (import nixpkgs) { }

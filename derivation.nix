@@ -7,5 +7,4 @@ let
     pkgs.haskell.packages.${compiler};
 
 in myHaskellPkgs.callCabal2nix "AoC2020" (builtins.fetchGit ./.) { }
-# in myHaskellPkgs.callCabal2nix "AoC2020" (./.) { }
 

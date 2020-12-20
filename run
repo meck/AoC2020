@@ -5,23 +5,32 @@ if [ -z "$1" ]
   echo "Usage:\n" \
        "  $0 solve DAY\n" \
        "  $0 test DAY\n" \
-       "  $0 bench DAY\n" >&2;
+       "  $0 bench DAY\n" \
+       "  $0 hoo DAY\n" >&2;
   exit
 fi
 
 case "$1" in
+
   "solve" )
   cabal run AoC2020 -- "$2"
   ;;
+
   "test" )
-  cabal test --test-options="-p AoC2020.$2 --color always" --test-show-details streaming
-  # stack build --test --ta "-p AoC2019.$2" --fast --file-watch
+  while
+    tput reset
+    cabal test --test-options="-p AoC2020.$2 --color always" --test-show-details streaming --verbose=0
+    inotifywait -qq -r -e modify .; do true;
+  done;
   ;;
+
   "bench" )
   stack build --force-dirty --bench --ba "$2" --file-watch --ghc-options -O2
   ;;
+
   "hoo" )
   hoogle server --local
   ;;
+
 esac
 

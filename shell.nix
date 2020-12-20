@@ -12,10 +12,15 @@ let
   };
 
 in myHaskellPkgs.shellFor {
-  packages = pkgs: [ drv myHaskellPkgs.cabal-install ];
+  packages = pkgs: [
+    drv
+    myHaskellPkgs.cabal-install
+
+  ];
   withHoogle = true;
   nativeBuildInputs = with myHaskellPkgs; [
     haskell-language-server
     cabal-install
+    pkgs.inotify-tools
   ];
 }
