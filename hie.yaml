@@ -1,0 +1,8 @@
+cradle:
+  cabal:
+    - path: "src"
+      component: "AoC2020:exe:AoC2020"
+    - path: "test"
+      component: "AoC2020:test:AoC2020-test"
+    # - path: "./exe/taffybar.hs"
+    #   component: "meck-xmonad:exe:taffybar"

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+  then
+  echo "Usage:\n" \
+       "  $0 solve DAY\n" \
+       "  $0 test DAY\n" \
+       "  $0 bench DAY\n" >&2;
+  exit
+fi
+
+case "$1" in
+  "solve" )
+  cabal run AoC2020 -- "$2"
+  ;;
+  "test" )
+  cabal test --test-options="-p AoC2020.$2 --color always" --test-show-details streaming
+  # stack build --test --ta "-p AoC2019.$2" --fast --file-watch
+  ;;
+  "bench" )
+  stack build --force-dirty --bench --ba "$2" --file-watch --ghc-options -O2
+  ;;
+  "hoo" )
+  hoogle server --local
+  ;;
+esac
+
