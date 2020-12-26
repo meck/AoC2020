@@ -58,13 +58,15 @@ library
         split,
         mtl,
         vector,
+        bytestring,
+        megaparsec,
+        parser-combinators,
         directory,
         http-client,
         http-client-tls,
-        bytestring,
         case-insensitive,
         gloss,
-        deepseq
+        deepseq,
 
 executable AoC2020
     main-is: Main.hs

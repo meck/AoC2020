@@ -1,7 +1,8 @@
 module Day2 (day02a, day02b) where
 
-import qualified Parsing as P
-import Text.ParserCombinators.ReadP
+import Parsing
+import Text.Megaparsec
+import Text.Megaparsec.Char
 
 data Pass = Pass Int Int Char String
 
@@ -13,16 +14,17 @@ isValid (Pass minN maxN c s) = (n >= minN) && (n <= maxN)
 isValid2 :: Pass -> Bool
 isValid2 (Pass a b c s) = (== 1) $ length $ filter (== c) [s !! pred a, s !! pred b]
 
-pass :: ReadP Pass
+pass :: Parser Pass
 pass = do
-  mi <- P.integer
-  ma <- char '-' >> P.integer
-  c <- char ' ' >> get
-  s <- string ": " >> many1 get
+  mi <- int
+  ma <- (char '-') >> int
+  c <- spaceChar >> lowerChar
+  s <- chunk ": " >> some lowerChar
   pure $ Pass mi ma c s
 
 day02a :: String -> String
-day02a = show . length . filter isValid . fmap (P.run pass) . lines
+
+day02a = show . length . filter isValid . run (sepNL pass)
 
 day02b :: String -> String
-day02b = show . length . filter isValid2 . fmap (P.run pass) . lines
+day02b = show . length . filter isValid2 . run (sepNL pass)

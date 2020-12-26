@@ -1,27 +1,36 @@
-module Parsing (integer, integerAnd, run, commaSepListOf) where
+module Parsing (Parser, run, lexeme, sepNL, int, hex, signedInt) where
 
-import           Data.Char
-import           Data.List                      ( minimumBy )
-import           Data.Ord                       ( comparing )
-import           Text.ParserCombinators.ReadP
+import Data.Void (Void)
+import Text.Megaparsec
+import Text.Megaparsec.Char
+import qualified Text.Megaparsec.Char.Lexer as L
 
-integer :: ReadP Int
-integer =
-    skipSpaces
-        >>  read
-        <$> ((++) <$> option "" (string "-") <*> many1 (satisfy isDigit))
+-- Simplest type of parser
+type Parser = Parsec Void String
 
-integerAnd :: ReadP a -> ReadP Int
-integerAnd r = integer >>= \n -> r >> return n
+-- Run Parser until eof
+run :: (VisualStream s, TraversableStream s, ShowErrorComponent e) => Parsec e s p -> s -> p
+run p s = case runParser (p <* eof) "" s of
+  (Left err) -> error $ errorBundlePretty err
+  (Right res) -> res
 
-commaSepListOf :: ReadP a -> ReadP [a]
-commaSepListOf a = do
-    x  <- a
-    xs <- many (char ',' >> a)
-    return (x : xs)
+-- Space Between Tokens
+lexeme :: Parser a -> Parser a
+lexeme = L.lexeme space1
 
-run :: ReadP a -> String -> a
-run parser s
-    | null rest = a
-    | otherwise = error $ "AOC Incomplete parse, remaining: \"" <> rest <> "\""
-    where (a, rest) = minimumBy (comparing snd) $ readP_to_S (parser <* skipSpaces) s
+-- newline Between Tokens
+sepNL :: Parser a -> Parser [a]
+sepNL = flip sepBy1 newline
+
+-- Integer
+int :: Parser Int
+int = L.decimal
+
+-- Integer
+hex :: Parser Int
+hex = L.hexadecimal
+
+-- Signed Integer
+-- No space between sign
+signedInt :: Parser Int
+signedInt = L.signed (pure ()) int
