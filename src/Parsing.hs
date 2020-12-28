@@ -26,7 +26,7 @@ sepNL = flip sepBy1 newline
 int :: Parser Int
 int = L.decimal
 
--- Integer
+-- Hex
 hex :: Parser Int
 hex = L.hexadecimal
 
