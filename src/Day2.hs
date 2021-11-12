@@ -1,6 +1,6 @@
 module Day2 (day02a, day02b) where
 
-import Parsing
+import AoC.Parsing
 import Text.Megaparsec
 import Text.Megaparsec.Char
 
@@ -23,7 +23,6 @@ pass = do
   pure $ Pass mi ma c s
 
 day02a :: String -> String
-
 day02a = show . length . filter isValid . run (sepNL pass)
 
 day02b :: String -> String

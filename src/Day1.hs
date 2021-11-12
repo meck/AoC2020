@@ -1,7 +1,7 @@
 module Day1 (day01a, day01b) where
 
+import AoC.Parsing
 import Control.Monad (replicateM)
-import Parsing
 
 nCombi :: (Num p, Eq p) => Int -> [p] -> p
 nCombi n xs = product . head $ [ys | ys <- replicateM n xs, sum ys == 2020]

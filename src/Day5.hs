@@ -2,9 +2,9 @@
 
 module Day5 (day05a, day05b) where
 
+import AoC.Parsing
 import Data.Bits
 import Data.List (foldl', (\\))
-import Parsing
 import Text.Megaparsec
 import Text.Megaparsec.Char
 

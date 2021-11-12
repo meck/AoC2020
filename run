@@ -1,36 +1,48 @@
 #!/bin/sh
+usage() {
+    echo -e "Usage:\n" \
+        "  $0 solve DAY\n" \
+        "  $0 test DAY\n" \
+        "  $0 bench DAY\n" \
+        "  $0 hooge DAY\n" >&2
+}
 
-if [ -z "$1" ]
-  then
-  echo "Usage:\n" \
-       "  $0 solve DAY\n" \
-       "  $0 test DAY\n" \
-       "  $0 bench DAY\n" \
-       "  $0 hoo DAY\n" >&2;
-  exit
+if [ -z "$1" ]; then
+    usage
 fi
 
 case "$1" in
 
-  "solve" )
-  cabal run AoC2020 -- "$2"
-  ;;
+    "solve")
+        if [ -z "$2" ]; then
+            cabal run AoC
+        else
+            cabal run AoC -- "$2"
+        fi
+        ;;
 
-  "test" )
-  while
-    tput reset
-    cabal test --test-options="-p AoC2020.$2 --color always" --test-show-details streaming --verbose=0
-    inotifywait -qq -r -e modify --exclude dist-newstyle .; do true;
-  done;
-  ;;
+    "test")
+        while
+            tput reset
+            cabal test --test-options="-p AoC.$2 --color always" --test-show-details streaming --verbose=0
+            inotifywait -qq -r -e modify --exclude dist-newstyle .
+        do
+            true
+        done
+        ;;
 
-  "bench" )
-  stack build --force-dirty --bench --ba "$2" --file-watch --ghc-options -O2
-  ;;
+    "bench")
+        while
+            tput reset
+            cabal bench --benchmark-options="$2"
+            inotifywait -qq -r -e modify --exclude dist-newstyle .
+        do
+            true
+        done
+        ;;
 
-  "hoo" )
-  hoogle server --local
-  ;;
+    "hoogle")
+        hoogle server --local &
+        ;;
 
 esac
-

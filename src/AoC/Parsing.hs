@@ -1,4 +1,4 @@
-module Parsing (Parser, run, lexeme, sepNL, int, hex, signedInt) where
+module AoC.Parsing (Parser, run, lexeme, sepNL, int, hex, signedInt) where
 
 import Data.Void (Void)
 import Text.Megaparsec
@@ -20,7 +20,7 @@ lexeme = L.lexeme space1
 
 -- newline Between Tokens
 sepNL :: Parser a -> Parser [a]
-sepNL = flip sepBy1 newline
+sepNL = flip sepEndBy newline
 
 -- Integer
 int :: Parser Int

@@ -1,6 +1,11 @@
-{ }:
+{ pkgs, compiler ? "default", ... }:
 let
 
-  pkgs = import ./nixpkgs.nix;
+  myHaskellPkgs =
+    if compiler == "default" then
+      pkgs.haskellPackages
+    else
+      pkgs.haskell.packages.${compiler};
 
-in pkgs.callPackage ./derivation.nix { pkgs = pkgs; }
+in
+myHaskellPkgs.callCabal2nixWithOptions "AoC" (builtins.fetchGit ./.) "--benchmark" { }

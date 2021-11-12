@@ -1,6 +1,5 @@
 module Day22 (day22a, day22b) where
 
-
 day22a :: String -> String
 day22a = id
 

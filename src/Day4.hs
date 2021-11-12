@@ -1,10 +1,10 @@
 module Day4 (day04a, day04b) where
 
+import AoC.Parsing
 import Control.Applicative.Permutations
 import Data.Char
 import Data.List.Split (splitOn)
 import Data.Maybe (mapMaybe)
-import Parsing
 import Text.Megaparsec
 import Text.Megaparsec.Char
 

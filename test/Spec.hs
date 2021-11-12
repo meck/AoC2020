@@ -2,7 +2,7 @@
 
 module Main (main) where
 
-import AoC2020
+import AoC
 import Data.Bifunctor (bimap)
 import qualified Data.Text as T
 import Data.Text.IO (readFile)
@@ -29,5 +29,5 @@ makeTest ((name, solu), tests) =
 
 main :: IO ()
 main = do
-  testFiles <- sequenceA $ getTests . fst <$> argLookup
-  defaultMain $ testGroup "AoC2020" $ makeTest <$> zip argLookup testFiles
+  testFiles <- sequenceA $ getTests . fst <$> solutionLookup
+  defaultMain $ testGroup ("AoC " <> show aocYear) $ makeTest <$> zip solutionLookup testFiles

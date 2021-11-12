@@ -1,11 +1,14 @@
+{-# LANGUAGE LambdaCase #-}
+
 module Main (main) where
 
-import AoC2020
+import AoC
+import AoC.Input (getInput)
+import Data.Maybe (fromMaybe)
 import Gauge.Main
 
-makeTests :: (String, String -> b) -> Benchmark
-makeTests (name, f) =
-  env (readInput name) $ \input -> bench name $ whnf f input
+makeTest :: (String, String -> b) -> Benchmark
+makeTest (name, f) = env (fromMaybe "" <$> getInput name) $ \ inp -> bench name $ whnf f inp
 
 main :: IO ()
-main = defaultMain $ makeTests <$> argLookup
+main = defaultMain $ makeTest <$> solutionLookup
