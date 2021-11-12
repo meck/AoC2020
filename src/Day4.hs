@@ -7,6 +7,7 @@ import Data.List.Split (splitOn)
 import Data.Maybe (mapMaybe)
 import Text.Megaparsec
 import Text.Megaparsec.Char
+import qualified Text.Megaparsec.Char.Lexer as L
 
 data Pass1 = Pass1 String String String String String String String (Maybe String) deriving (Eq, Show)
 
@@ -27,7 +28,7 @@ pass1 =
 
 digitRange :: String -> Int -> Int -> Parser Int
 digitRange lab l h = do
-  i <- string (lab <> ":") >> int
+  i <- string (lab <> ":") >> L.decimal 
   if i >= l && i <= h
     then pure i
     else fail "Bad range"
@@ -51,7 +52,7 @@ newtype Hgt = Hgt Int deriving (Eq, Show)
 
 hgt :: Parser Hgt
 hgt = do
-  h <- string "hgt:" >> int
+  h <- string "hgt:" >> L.decimal 
   u <- string "cm" <|> string "in"
   let res
         | u == "cm" && h >= 150 && h <= 194 = pure $ Hgt h
@@ -107,3 +108,4 @@ day04a = show . length . mapMaybe (parseMaybe pass1) . splitOn "\n\n"
 
 day04b :: String -> String
 day04b = show . length . mapMaybe (parseMaybe pass2) . splitOn "\n\n"
+-- day04b = show . length . fmap (run  pass2) . splitOn "\n\n"

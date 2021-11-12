@@ -1,4 +1,6 @@
-module AoC.Parsing (Parser, run, lexeme, sepNL, int, hex, signedInt) where
+{-# LANGUAGE OverloadedStrings #-}
+
+module AoC.Parsing (Parser, run, lexeme, sepNL, int, hex, signedInt, symbol, parens) where
 
 import Data.Void (Void)
 import Text.Megaparsec
@@ -15,20 +17,28 @@ run p s = case runParser (p <* eof) "" s of
   (Right res) -> res
 
 -- Space Between Tokens
+-- Keep newlines
 lexeme :: Parser a -> Parser a
-lexeme = L.lexeme space1
+lexeme = L.lexeme hspace
 
 -- newline Between Tokens
 sepNL :: Parser a -> Parser [a]
 sepNL = flip sepEndBy newline
 
+-- Token parser
+symbol :: Tokens [Char] -> Parser (Tokens [Char])
+symbol = L.symbol hspace
+
+parens :: Parser a -> Parser a
+parens = between (symbol "(") (symbol ")")
+
 -- Integer
 int :: Parser Int
-int = L.decimal
+int = lexeme L.decimal
 
 -- Hex
 hex :: Parser Int
-hex = L.hexadecimal
+hex = lexeme L.hexadecimal
 
 -- Signed Integer
 -- No space between sign

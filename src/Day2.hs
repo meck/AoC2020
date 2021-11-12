@@ -17,8 +17,8 @@ isValid2 (Pass a b c s) = (== 1) $ length $ filter (== c) [s !! pred a, s !! pre
 pass :: Parser Pass
 pass = do
   mi <- int
-  ma <- (char '-') >> int
-  c <- spaceChar >> lowerChar
+  ma <- char '-' >> int
+  c <-  lowerChar
   s <- chunk ": " >> some lowerChar
   pure $ Pass mi ma c s
 

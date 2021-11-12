@@ -9,7 +9,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Char
 
 bitsToWord :: Foldable t => t Bool -> Int
-bitsToWord i = foldl' go zeroBits i
+bitsToWord = foldl' go zeroBits
   where
     go acc b
       | b = next `setBit` 0
