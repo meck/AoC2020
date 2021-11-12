@@ -73,6 +73,7 @@ library
         bytestring,
         directory,
         case-insensitive,
+        safe,
 
 executable AoC
     import: shared-properties

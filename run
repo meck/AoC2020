@@ -24,7 +24,7 @@ case "$1" in
     "test")
         while
             tput reset
-            cabal test --test-options="-p AoC.$2 --color always" --test-show-details streaming --verbose=0
+            cabal test --test-options="-p $2 --color always" --test-show-details streaming --verbose=0
             inotifywait -qq -r -e modify --exclude dist-newstyle .
         do
             true
