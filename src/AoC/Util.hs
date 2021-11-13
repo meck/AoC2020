@@ -15,7 +15,9 @@ module AoC.Util
     groupSortOn,
     drawCords,
     genGrid,
+    mkCordsGrid,
     firstEq,
+    neighbourCords,
   )
 where
 
@@ -99,3 +101,21 @@ drawCords def f m = unlines $ fmap (f . flip (M.findWithDefault def) m) <$> cs
     yMin = M.foldrWithKey (\(_, y) _ y' -> min y y') 0 m
     yMax = M.foldrWithKey (\(_, y) _ y' -> max y y') 0 m
     cs = [[(x, y) | x <- [xMin .. xMax]] | y <- [yMin .. yMax]]
+
+mkCordsGrid :: (a -> b) -> [[a]] -> M.Map (Int, Int) b
+mkCordsGrid f inputs = f <$> M.fromList (cords `zip` concat inputs)
+  where
+    cords = [(x, y) | x <- [0 .. length (head inputs)], y <- [0 .. length inputs]]
+
+-- Neighbours including diaganol
+neighbourCords :: [(Int, Int)]
+neighbourCords =
+  [ (-1, -1),
+    (0, -1),
+    (1, -1),
+    (-1, 0),
+    (1, 0),
+    (-1, 1),
+    (0, 1),
+    (1, 1)
+  ]
