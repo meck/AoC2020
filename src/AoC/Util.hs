@@ -18,6 +18,7 @@ module AoC.Util
     mkCordsGrid,
     firstEq,
     neighbourCords,
+    occurencesLookup,
   )
 where
 
@@ -107,7 +108,7 @@ mkCordsGrid f inputs = f <$> M.fromList (cords `zip` concat inputs)
   where
     cords = [(x, y) | x <- [0 .. length (head inputs)], y <- [0 .. length inputs]]
 
--- Neighbours including diaganol
+-- Neighbours including diagonals
 neighbourCords :: [(Int, Int)]
 neighbourCords =
   [ (-1, -1),
@@ -119,3 +120,8 @@ neighbourCords =
     (0, 1),
     (1, 1)
   ]
+
+-- A lookup table with the number of
+-- occurrences of the items
+occurencesLookup :: (Ord k, Num a) => [k] -> [(k, a)]
+occurencesLookup xs = M.toList $ M.fromListWith (+) $ zip xs (repeat 1)
